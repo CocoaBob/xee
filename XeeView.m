@@ -594,9 +594,8 @@ static const void *XeeCopyGLGetBytePointer(void *bitmap) { return bitmap; }
 
     [self lockFocus];
 
-#ifdef OBSOLETE
-    CGDataProviderDirectAccessCallbacks callbacks={XeeCopyGLGetBytePointer,NULL,NULL,NULL};
-    CGDataProviderRef provider=CGDataProviderCreateDirectAccess(bitmap,bytesperrow*height,&callbacks);
+    CGDataProviderDirectCallbacks callbacks={0,XeeCopyGLGetBytePointer,NULL,NULL,NULL};
+    CGDataProviderRef provider=CGDataProviderCreateDirect(bitmap,bytesperrow*height,&callbacks);
     CGColorSpaceRef cs=CGColorSpaceCreateDeviceRGB();
     CGImageRef cgimage=CGImageCreate(width,height,8,32,bytesperrow,cs,kCGImageAlphaNoneSkipFirst,provider,NULL,NO,kCGRenderingIntentDefault);
     
@@ -606,7 +605,6 @@ static const void *XeeCopyGLGetBytePointer(void *bitmap) { return bitmap; }
     CGImageRelease(cgimage);
     CGDataProviderRelease(provider);
     CGColorSpaceRelease(cs);
-#endif
 
     free(bitmap);
 
