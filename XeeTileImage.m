@@ -4,7 +4,7 @@
 
 GLuint XeeMakeGridTexture(float r,float b,float g);
 size_t XeeTileImageGetBytes(void *infoptr,void *buffer,size_t count);
-void XeeTileImageSkipBytes(void *infoptr,size_t count);
+off_t XeeTileImageSkipBytes(void *infoptr,off_t count);
 void XeeTileImageRewind(void *infoptr);
 void XeeTileImageReleaseInfo(void *infoptr);
 
@@ -524,11 +524,10 @@ glInternalFormat:(int)glintformat glFormat:(int)glformat glType:(int)gltype
 		info->a12=(int)(m.a12+(m.a10+m.a11)/4.0);
 		info->image=self;
 
-#ifdef OBSOLETE
-		CGDataProviderCallbacks callbacks=
-		{ XeeTileImageGetBytes,XeeTileImageSkipBytes,XeeTileImageRewind,XeeTileImageReleaseInfo };
+		CGDataProviderSequentialCallbacks callbacks=
+		{ 0, XeeTileImageGetBytes,XeeTileImageSkipBytes,XeeTileImageRewind,XeeTileImageReleaseInfo };
 
-		CGDataProviderRef provider=CGDataProviderCreate(info,&callbacks);
+		CGDataProviderRef provider=CGDataProviderCreateSequential(info,&callbacks);
 
 		if(provider)
 		{
@@ -549,7 +548,6 @@ glInternalFormat:(int)glintformat glFormat:(int)glformat glType:(int)gltype
         {
             free(info);
         }
-#endif
 	}
 
 	return cgimage;
@@ -610,10 +608,11 @@ size_t XeeTileImageGetBytes(void *infoptr,void *buffer,size_t count)
 	return count;
 }
 
-void XeeTileImageSkipBytes(void *infoptr,size_t count)
+off_t XeeTileImageSkipBytes(void *infoptr,off_t count)
 {
 	struct XeeTileImageProviderInfo *info=(struct XeeTileImageProviderInfo *)infoptr;
 	info->pos+=count;
+    return info->pos;
 }
 
 void XeeTileImageRewind(void *infoptr)
