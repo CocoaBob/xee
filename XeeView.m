@@ -8,8 +8,7 @@
 #import <OpenGL/GL.h>
 #import <OpenGL/GLu.h>
 #import <Carbon/Carbon.h>
-
-
+#import <ApplicationServices/ApplicationServices.h>
 
 GLuint make_resize_texture();
 
@@ -595,17 +594,20 @@ static const void *XeeCopyGLGetBytePointer(void *bitmap) { return bitmap; }
 
     [self lockFocus];
 
+#ifdef OBSOLETE
     CGDataProviderDirectAccessCallbacks callbacks={XeeCopyGLGetBytePointer,NULL,NULL,NULL};
     CGDataProviderRef provider=CGDataProviderCreateDirectAccess(bitmap,bytesperrow*height,&callbacks);
     CGColorSpaceRef cs=CGColorSpaceCreateDeviceRGB();
     CGImageRef cgimage=CGImageCreate(width,height,8,32,bytesperrow,cs,kCGImageAlphaNoneSkipFirst,provider,NULL,NO,kCGRenderingIntentDefault);
-
+    
     CGContextRef gc=[[NSGraphicsContext currentContext] graphicsPort];
     CGContextDrawImage(gc,CGRectMake(0,0,width,height),cgimage);
 
     CGImageRelease(cgimage);
     CGDataProviderRelease(provider);
     CGColorSpaceRelease(cs);
+#endif
+
     free(bitmap);
 
 	[self unlockFocus];

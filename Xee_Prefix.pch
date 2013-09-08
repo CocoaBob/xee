@@ -6,6 +6,7 @@
     #import <Cocoa/Cocoa.h>
 #endif
 
+#if 0
 #if (defined(MACOSX_DEPLOYMENT_TARGET) && MACOSX_DEPLOYMENT_TARGET <= MAC_OS_X_VERSION_10_4) || \
 (defined(MAC_OS_X_VERSION_MIN_REQUIRED) && MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4)
 
@@ -24,5 +25,7 @@
 @interface NSEvent()
 -(const void *)eventRef;
 @end
+
+#endif
 
 #endif

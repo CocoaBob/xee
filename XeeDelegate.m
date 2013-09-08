@@ -575,7 +575,10 @@ BOOL finderlaunch;
 			[item setState:NSOnState];
 			found=YES;
 		}
-		else [item setState:NSOffState];
+		else
+        {
+            [item setState:NSOffState];
+        }
 	}
 
 	if(found)

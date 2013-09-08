@@ -1077,7 +1077,7 @@ static NSMutableArray *controllers=nil;
 		int height=currcrop.size.height;
 		int bottom=[currimage fullWidth]-currcrop.size.height-crop.origin.y-currcrop.origin.y;
 		[statusbar addEntry:[NSString stringWithFormat:@"%C%d %C%d %C%d,%d %C%d,%d",
-		0x2194,width,0x2195,height,0x21f1,left,top,0x21f2,right,bottom]];
+		0x2194,width,0x2195,height,0x21f1,left,top,(unichar)0x21f2,right,bottom]];
 	}
 	else
 	{

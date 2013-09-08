@@ -524,6 +524,7 @@ glInternalFormat:(int)glintformat glFormat:(int)glformat glType:(int)gltype
 		info->a12=(int)(m.a12+(m.a10+m.a11)/4.0);
 		info->image=self;
 
+#ifdef OBSOLETE
 		CGDataProviderCallbacks callbacks=
 		{ XeeTileImageGetBytes,XeeTileImageSkipBytes,XeeTileImageRewind,XeeTileImageReleaseInfo };
 
@@ -544,7 +545,11 @@ glInternalFormat:(int)glintformat glFormat:(int)glformat glType:(int)gltype
 			}
 			CGDataProviderRelease(provider);
 		}
-		else free(info);
+		else
+        {
+            free(info);
+        }
+#endif
 	}
 
 	return cgimage;

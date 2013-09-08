@@ -35,7 +35,7 @@ static void XeeImageIOReleaseInfo(void *info) { [(CSHandle *)info release]; }
 		[options setObject:type forKey:(NSString *)kCGImageSourceTypeIdentifierHint];
 	}
 
-
+#ifdef OBSOLETE
 //	CGDataProviderRef provider=CGDataProviderCreateWithURL((CFURLRef)[NSURL fileURLWithPath:[self filename]]);
 	CGDataProviderCallbacks callbacks=
 	{ XeeImageIOGetBytes,XeeImageIOSkipBytes,XeeImageIORewind,XeeImageIOReleaseInfo };
@@ -64,6 +64,9 @@ static void XeeImageIOReleaseInfo(void *info) { [(CSHandle *)info release]; }
 
 	if(thumbonly) return @selector(loadThumbnail);
 	return @selector(loadImage);
+#else
+	return @selector(loadImage);
+#endif
 }
 
 -(void)deallocLoader

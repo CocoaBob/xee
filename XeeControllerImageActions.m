@@ -6,11 +6,12 @@
 #import "XeeCropTool.h"
 #import "XeeImageSource.h"
 
+#import <QuickTime/ImageCompression.h>
+#import <QuickTime/QuickTimeComponents.h>
 
 
 float XeeZoomLevels[]={0.03125,0.044,0.0625,0.09,0.125,0.18,0.25,0.35,0.5,0.70,1,1.5,2,3,4,6,8,11,16,23,32};
 int XeeNumberOfZoomLevels=21;
-
 
 
 @implementation XeeController (ImageActions)
@@ -32,8 +33,6 @@ int XeeNumberOfZoomLevels=21;
 	}
 	else NSBeep();
 }
-#import <QuickTime/ImageCompression.h>
-#import <QuickTime/QuickTimeComponents.h>
 
 -(void)pasteboard:(NSPasteboard *)pboard provideDataForType:(NSString *)type
 {
