@@ -5,7 +5,10 @@
 @implementation XeeImageIOImage
 
 static size_t XeeImageIOGetBytes(void *info, void *buffer, size_t count) { return [(CSHandle *)info readAtMost:count toBuffer:buffer]; }
-static void XeeImageIOSkipBytes(void *info, size_t count) { [(CSHandle *)info skipBytes:count]; }
+static off_t XeeImageIOSkipBytes(void *info, off_t count) {
+    [(CSHandle *)info skipBytes:count];
+    return [(CSHandle*)info offsetInFile];
+}
 static void XeeImageIORewind(void *info) { [(CSHandle *)info seekToFileOffset:0]; }
 static void XeeImageIOReleaseInfo(void *info) { [(CSHandle *)info release]; }
 
@@ -35,38 +38,35 @@ static void XeeImageIOReleaseInfo(void *info) { [(CSHandle *)info release]; }
 		[options setObject:type forKey:(NSString *)kCGImageSourceTypeIdentifierHint];
 	}
 
-#ifdef OBSOLETE
-//	CGDataProviderRef provider=CGDataProviderCreateWithURL((CFURLRef)[NSURL fileURLWithPath:[self filename]]);
-	CGDataProviderCallbacks callbacks=
-	{ XeeImageIOGetBytes,XeeImageIOSkipBytes,XeeImageIORewind,XeeImageIOReleaseInfo };
-	CGDataProviderRef provider=CGDataProviderCreate([[self handle] retain],&callbacks);
-	if(!provider) return NULL;
+    CGDataProviderSequentialCallbacks callbacks =
+    { 0,
+        XeeImageIOGetBytes,XeeImageIOSkipBytes,XeeImageIORewind,XeeImageIOReleaseInfo };
 
+	CGDataProviderRef provider=CGDataProviderCreateSequential([[self handle] retain],&callbacks);
+	if(!provider) return NULL;
+    
 	source=CGImageSourceCreateWithDataProvider(provider,(CFDictionaryRef)options);
 	CGDataProviderRelease(provider);
 	if(!source) return NULL;
-
+    
 	NSDictionary *cgproperties=[(id)CGImageSourceCopyPropertiesAtIndex(source,0,(CFDictionaryRef)options) autorelease];
 	if(!cgproperties) return NULL;
-
+    
 	width=[[cgproperties objectForKey:(NSString *)kCGImagePropertyPixelWidth] intValue];
 	height=[[cgproperties objectForKey:(NSString *)kCGImagePropertyPixelHeight] intValue];
-
+    
 	[self setDepthForImage:self properties:cgproperties];
 	[self setFormat:[self formatForType:(NSString *)CGImageSourceGetType(source)]];
-
+    
 	NSNumber *orientnum=[cgproperties objectForKey:(NSString *)kCGImagePropertyOrientation];
 	if(orientnum) [self setCorrectOrientation:[orientnum intValue]];
-
+    
 	[properties addObjectsFromArray:[self convertCGProperties:cgproperties]];
-
+    
 	current_image=0;
-
+    
 	if(thumbonly) return @selector(loadThumbnail);
 	return @selector(loadImage);
-#else
-	return @selector(loadImage);
-#endif
 }
 
 -(void)deallocLoader

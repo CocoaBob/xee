@@ -102,8 +102,6 @@ static void CSSetEntryPoint(jmp_buf env,void (*entry)(),void *stack,int stacksiz
 	if(_setjmp(env)==0) _longjmp(caller->env,1);
 }
 
-
-
 static void CSTigerCoroutineStart()
 {
 	CSCoroutine *coro=CSCurrentCoroutine();
@@ -130,8 +128,6 @@ static void CSTigerCoroutineStart()
 	return nil;
 }
 
-
-
 -(NSMethodSignature *)methodSignatureForSelector:(SEL)sel { return [target methodSignatureForSelector:sel]; }
 
 static void CSLeopardCoroutineStart()
@@ -157,8 +153,6 @@ static void CSLeopardCoroutineStart()
 }
 
 @end
-
-
 
 @implementation NSObject (CSCoroutine)
 
