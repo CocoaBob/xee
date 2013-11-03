@@ -61,6 +61,9 @@ GLuint make_resize_texture();
 		[[self openGLContext] setValues:&val forParameter:NSOpenGLCPSwapInterval];
 
 		[self registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
+        
+        if ([self respondsToSelector:@selector(setWantsBestResolutionOpenGLSurface:)])
+            [self setWantsBestResolutionOpenGLSurface:YES];
 	}
 	return self;
 }
@@ -102,6 +105,9 @@ GLuint make_resize_texture();
 	NSPoint focus=[self focus];
 
 	NSRect bounds=[self bounds];
+    if ([self respondsToSelector:@selector(convertRectToBacking:)]) {
+        bounds = [self convertRectToBacking:bounds];
+    }
 	width=bounds.size.width;
 	height=bounds.size.height;
 
@@ -469,7 +475,12 @@ GLuint make_resize_texture();
 		if(imgheight<height) draw_y=(height-imgheight)/2;
 		else draw_y=-y;
 
-		return NSMakeRect(draw_x,draw_y,imgwidth,imgheight);
+        NSRect returnValue = NSMakeRect(draw_x,draw_y,imgwidth,imgheight);
+        if ([self respondsToSelector:@selector(convertRectToBacking:)]) {
+            returnValue = [self convertRectToBacking:returnValue];
+        }
+        returnValue.origin = NSMakePoint(0, 0);
+        return returnValue;
 	}
 	else return NSZeroRect;
 }
