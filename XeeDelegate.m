@@ -287,7 +287,7 @@ BOOL finderlaunch;
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification
 {
-	if(!filesopened&&finderlaunch) [self openDocument:self];
+//	if(!filesopened&&finderlaunch) [self openDocument:self];
 }
 
 -(BOOL)application:(NSApplication *)app openFile:(NSString *)filename
