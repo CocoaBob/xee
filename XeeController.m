@@ -657,16 +657,19 @@ static NSMutableArray *controllers=nil;
 	BOOL rememberfocus=[[NSUserDefaults standardUserDefaults] boolForKey:@"rememberFocus"];
 	float savedzoom=[[NSUserDefaults standardUserDefaults] floatForKey:@"savedZoom"];
 
-	float horiz_zoom=maxsize.width/(float)[currimage width];
-	float vert_zoom=maxsize.height/(float)[currimage height];
-
+    float imgWidthInPoints = (float)[currimage width];
+    float imgHeightInPoints = (float)[currimage height];
+    
     // Retina Support
     NSScreen *currentScreen = [imageview.window screen];
     if ([currentScreen respondsToSelector:@selector(backingScaleFactor)]) {
         float scaleFactor = [currentScreen backingScaleFactor];
-        vert_zoom*=scaleFactor;
-        vert_zoom*=scaleFactor;
+        imgWidthInPoints/=scaleFactor;
+        imgHeightInPoints/=scaleFactor;
     }
+    
+	float horiz_zoom=maxsize.width/imgWidthInPoints;
+	float vert_zoom=maxsize.height/imgHeightInPoints;
     
 	float min_zoom=fminf(horiz_zoom,vert_zoom);
 
