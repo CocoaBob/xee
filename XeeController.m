@@ -605,6 +605,14 @@ static NSMutableArray *controllers=nil;
 	NSSize viewsize=[imageview bounds].size;
 	NSSize minsize=[self minViewSize];
 
+    // Retina Support
+    NSScreen *currentScreen = [imageview.window screen];
+    if ([currentScreen respondsToSelector:@selector(backingScaleFactor)]) {
+        float scaleFactor = [currentScreen backingScaleFactor];
+        size.width/=scaleFactor;
+        size.height/=scaleFactor;
+    }
+
 	if(size.width<minsize.width) size.width=minsize.width;
 	if(size.height<minsize.height) size.height=minsize.height;
 
@@ -651,6 +659,15 @@ static NSMutableArray *controllers=nil;
 
 	float horiz_zoom=maxsize.width/(float)[currimage width];
 	float vert_zoom=maxsize.height/(float)[currimage height];
+
+    // Retina Support
+    NSScreen *currentScreen = [imageview.window screen];
+    if ([currentScreen respondsToSelector:@selector(backingScaleFactor)]) {
+        float scaleFactor = [currentScreen backingScaleFactor];
+        vert_zoom*=scaleFactor;
+        vert_zoom*=scaleFactor;
+    }
+    
 	float min_zoom=fminf(horiz_zoom,vert_zoom);
 
 	if(remember) zoom=savedzoom;

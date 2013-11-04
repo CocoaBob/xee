@@ -61,7 +61,8 @@ GLuint make_resize_texture();
 		[[self openGLContext] setValues:&val forParameter:NSOpenGLCPSwapInterval];
 
 		[self registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
-        
+
+        // Retina Support
         if ([self respondsToSelector:@selector(setWantsBestResolutionOpenGLSurface:)])
             [self setWantsBestResolutionOpenGLSurface:YES];
 	}
@@ -105,6 +106,8 @@ GLuint make_resize_texture();
 	NSPoint focus=[self focus];
 
 	NSRect bounds=[self bounds];
+
+    // Retina Support
     if ([self respondsToSelector:@selector(convertRectToBacking:)]) {
         bounds = [self convertRectToBacking:bounds];
     }
@@ -466,23 +469,19 @@ GLuint make_resize_texture();
 
 -(NSRect)imageRect
 {
+    NSRect returnValue = NSZeroRect;
 	if(image)
 	{
 		int draw_x,draw_y;
-		if(imgwidth<width) draw_x=(width-imgwidth)/2;
+        if(imgwidth<width) draw_x=(width-imgwidth)/2;
 		else draw_x=-x;
 
 		if(imgheight<height) draw_y=(height-imgheight)/2;
 		else draw_y=-y;
 
-        NSRect returnValue = NSMakeRect(draw_x,draw_y,imgwidth,imgheight);
-        if ([self respondsToSelector:@selector(convertRectToBacking:)]) {
-            returnValue = [self convertRectToBacking:returnValue];
-        }
-        returnValue.origin = NSMakePoint(0, 0);
-        return returnValue;
+		returnValue = NSMakeRect(draw_x,draw_y,imgwidth,imgheight);
 	}
-	else return NSZeroRect;
+    return returnValue;
 }
 
 -(XeeMatrix)imageToViewTransformMatrix
