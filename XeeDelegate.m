@@ -290,6 +290,11 @@ BOOL finderlaunch;
 //	if(!filesopened&&finderlaunch) [self openDocument:self];
 }
 
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication
+{
+    return YES;
+}
+
 -(BOOL)application:(NSApplication *)app openFile:(NSString *)filename
 {
 	filesopened=YES;
