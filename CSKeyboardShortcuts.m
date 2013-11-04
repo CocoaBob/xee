@@ -437,7 +437,10 @@ static CSKeyboardShortcuts *defaultshortcuts=nil;
 			point.x+=dropsize.width+spacing;
  		}
 
-		[[key image] compositeToPoint:point operation:NSCompositeSourceOver];
+		[[key image] drawAtPoint:point
+                        fromRect:NSZeroRect
+                       operation:NSCompositeSourceOver
+                        fraction:1];
 
 		if(key==selected)
 		{
@@ -639,8 +642,14 @@ static CSKeyboardShortcuts *defaultshortcuts=nil;
 
 		[img lockFocus];
 
-		[left compositeToPoint:NSMakePoint(0,0) operation:NSCompositeSourceOver];
-		[right compositeToPoint:NSMakePoint(imgsize.width-[right size].width,0) operation:NSCompositeSourceOver];
+		[left drawAtPoint:NSMakePoint(0,0)
+                 fromRect:NSZeroRect
+                operation:NSCompositeSourceOver
+                 fraction:1];
+		[right drawAtPoint:NSMakePoint(imgsize.width-[right size].width,0)
+                  fromRect:NSZeroRect
+                 operation:NSCompositeSourceOver
+                  fraction:1];
 
 		int x=[left size].width;
 		int totalwidth=imgsize.width-x-[right size].width;
@@ -648,12 +657,18 @@ static CSKeyboardShortcuts *defaultshortcuts=nil;
 
 		while(totalwidth>=midwidth)
 		{
-			[mid compositeToPoint:NSMakePoint(x,0) operation:NSCompositeSourceOver];
+            [mid drawAtPoint:NSMakePoint(x,0)
+                    fromRect:NSZeroRect
+                   operation:NSCompositeSourceOver
+                    fraction:1];
 			x+=midwidth;
 			totalwidth-=midwidth;
 		}
 
-		if(totalwidth) [mid compositeToPoint:NSMakePoint(x,0) fromRect:NSMakeRect(0,0,totalwidth,[mid size].height) operation:NSCompositeSourceOver];
+		if(totalwidth) [mid drawAtPoint:NSMakePoint(x,0)
+                               fromRect:NSMakeRect(0,0,totalwidth,[mid size].height)
+                              operation:NSCompositeSourceOver
+                               fraction:1];
 
 		[text drawAtPoint:point withAttributes:attrs];
 		[img unlockFocus];

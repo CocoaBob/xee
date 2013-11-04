@@ -164,7 +164,10 @@ static NSDictionary *attributes;
 
 	if(image)
 	{
-		[image compositeToPoint:NSMakePoint(frame.origin.x,frame.origin.y+(frame.size.height-imagesize.height)/2) operation:NSCompositeSourceOver];
+		[image drawAtPoint:NSMakePoint(frame.origin.x,frame.origin.y+(frame.size.height-imagesize.height)/2)
+                  fromRect:NSZeroRect
+                 operation:NSCompositeSourceOver
+                  fraction:1];
 		[title drawAtPoint:NSMakePoint(frame.origin.x+imagesize.width+spacing,frame.origin.y+(frame.size.height-textsize.height)/2) withAttributes:attributes];
 	}
 	else
