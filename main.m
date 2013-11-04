@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
 		@"YES",@"openFilePanelOnLaunch",
 		@"NO",@"upsampleImage",
 		[NSArchiver archivedDataWithRootObject:[NSColor whiteColor]],@"defaultImageBackground",
-		[NSArchiver archivedDataWithRootObject:[NSColor blackColor]],@"windowBackground",
-		[NSArchiver archivedDataWithRootObject:[NSColor blackColor]],@"fullScreenBackground",
+		[NSArchiver archivedDataWithRootObject:[NSColor grayColor]],@"windowBackground",
+		[NSArchiver archivedDataWithRootObject:[NSColor grayColor]],@"fullScreenBackground",
 	nil]];
 
 	// Include the system sound prefs on Leopard
