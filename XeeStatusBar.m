@@ -147,7 +147,7 @@ static NSDictionary *attributes;
 
 	if(image)
 	{
-		return NSMakeSize(imagesize.width+spacing+textsize.width,MAX(imagesize.height,textsize.height));
+		return NSMakeSize(ceil(imagesize.width+spacing+textsize.width),ceil(MAX(imagesize.height,textsize.height)));
 	}
 	else
 	{
