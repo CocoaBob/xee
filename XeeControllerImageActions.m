@@ -209,8 +209,19 @@ NSLog(@"%@",[data subdataWithRange:NSMakeRange(0,2*1024)]);
 
 	NSSize maxsize=[self maxViewSize];
 
-	float horiz_zoom=maxsize.width/(float)[currimage width];
-	float vert_zoom=maxsize.height/(float)[currimage height];
+    float imgWidthInPoints = (float)[currimage width];
+    float imgHeightInPoints = (float)[currimage height];
+    
+    // Retina Support
+    NSScreen *currentScreen = [imageview.window screen];
+    if ([currentScreen respondsToSelector:@selector(backingScaleFactor)]) {
+        float scaleFactor = [currentScreen backingScaleFactor];
+        imgWidthInPoints/=scaleFactor;
+        imgHeightInPoints/=scaleFactor;
+    }
+    
+	float horiz_zoom=maxsize.width/imgWidthInPoints;
+	float vert_zoom=maxsize.height/imgHeightInPoints;
 
 	[self setZoom:horiz_zoom<vert_zoom?horiz_zoom:vert_zoom];
 

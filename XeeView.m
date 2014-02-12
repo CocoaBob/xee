@@ -51,6 +51,10 @@ GLuint make_resize_texture();
 		delegate=nil;
 
 		NSRect bounds=[self bounds];
+        // Retina Support
+        if ([self respondsToSelector:@selector(convertRectToBacking:)]) {
+            bounds = [self convertRectToBacking:bounds];
+        }
 		width=bounds.size.width;
 		height=bounds.size.height;
 
