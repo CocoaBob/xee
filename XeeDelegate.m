@@ -441,6 +441,9 @@ BOOL finderlaunch;
 	XeeController *focus=[self focusedController];
 
 	NSString *filename=[focus currentFilename];
+    if (!filename)
+        return;
+    
 	NSArray *apps=[(NSArray *)LSCopyApplicationURLsForURL((CFURLRef)[NSURL fileURLWithPath:filename],kLSRolesEditor) autorelease];
 	NSMenu *defmenu=[[[NSMenu alloc] init] autorelease];
 	NSString *defeditor=[self defaultEditor];
