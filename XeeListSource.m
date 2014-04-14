@@ -61,7 +61,7 @@
 {
 	[listlock lock];
 
-	XeeListEntry *newcurrentry=nil,*newnextentry=nil;
+	XeeListEntry *newcurrentry=nil,*newnextentry=nil,*chosencurrentry=nil;
 	if(index>=0 && index<[entries count]) newcurrentry=[entries objectAtIndex:index];
 	if(next>=0 && next<[entries count]) newnextentry=[entries objectAtIndex:next];
 
@@ -70,8 +70,9 @@
 	[newcurrentry retainImage];
 	[newnextentry retainImage];
 
-	if(newcurrentry!=currentry) [self setPreviousEntry:currentry];
-	[self setCurrentEntry:newcurrentry];
+    chosencurrentry = [newcurrentry image]?newcurrentry:newnextentry;
+	if(chosencurrentry!=currentry) [self setPreviousEntry:currentry];
+	[self setCurrentEntry:chosencurrentry];
 	[self setNextEntry:newnextentry];
 
 	[newcurrentry releaseImage];
