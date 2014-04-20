@@ -388,8 +388,10 @@ postprop(struct exifprop *prop, struct exiftags *t)
 	/* Digital zoom: set to verbose if numerator is 0 or fraction = 1. */
 
 	case EXIF_T_DIGIZOOM:
-		if (!exif4byte(t->md.btiff + prop->value, &t->md))
-			strcpy(prop->str, "Unused");
+        if (!exif4byte(t->md.btiff + prop->value, &t->md)) {
+            exifstralloc(&prop->str, 6);
+            strcpy(prop->str, "Unused");
+        }
 		else if (exif4byte(t->md.btiff + prop->value, &t->md) !=
 		    exif4byte(t->md.btiff + prop->value + 4, &t->md))
 			break;
